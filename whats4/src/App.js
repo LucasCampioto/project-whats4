@@ -1,9 +1,8 @@
 import React from 'react';
 import Styled from 'styled-components';
 import Proptypes from 'prop-types'
-import Comentario from './components/Comentario/index'
+import BalaoComentario from './components/Mensagem/index';
 import Avatar from '@material-ui/core/Avatar';
-import Fab from '@material-ui/core/Fab';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import CallIcon from '@material-ui/icons/Call';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -168,9 +167,12 @@ class App extends React.Component {
 		});
 	}
 
+	
+
 	pressionarEnterEnviaMessagem = e =>{
 		if (e.keyCode === 13){
 			this.adicionarMensagem()
+			
 		}
 	}
 
@@ -194,12 +196,22 @@ class App extends React.Component {
 		}
 	}
 	render(){
+		const arrayDeMensagens = this.state.arrListaMensagem.map(element =>{
+			return(	
+					<BalaoComentario aoClicarDuasVezes={this.apagarMensagem} 
+					kay={this.state.arrListaMensagem.indexOf(element)} 
+					name={element.nomeUsuario} 
+					msg={element.mensagem}/>
+			);
+		});
+
+		
 		return (
 			<ContainerPrincipal>
 			<Container>
 				<InfoUsuario>
 					<InfoAvatar>
-						<Avatar alt="Lucas" src="https://static.tvtropes.org/pmwiki/pub/images/anakin_skywalker_rots_6.png" />
+						<Avatar alt="" src="https://static.tvtropes.org/pmwiki/pub/images/anakin_skywalker_rots_6.png" />
 						<NomeUsuario>Anakin </NomeUsuario>
 					</InfoAvatar>
 					<InfoConfig>
@@ -211,14 +223,7 @@ class App extends React.Component {
 					
 				</InfoUsuario>
 				<ListaComentarios>
-					{this.state.arrListaMensagem.map(element =>{
-						return (
-							<Comentario aoClicarDuasVezes={this.apagarMensagem} kay={this.state.arrListaMensagem.indexOf(element)} name={element.nomeUsuario} msg={element.mensagem}/>
-						)
-					})
-					}
-
-					
+					{arrayDeMensagens}
 				</ListaComentarios>
 				<Formulario>
 					<InputNome value={this.state.inputUsuario} onChange={this.controleUsuario} placeholder="Usuário"></InputNome>
@@ -235,8 +240,5 @@ class App extends React.Component {
 InputNome.propTypes = {
 	value: Proptypes.string.isRequired
 }
-
-
-
 
 export default App;
